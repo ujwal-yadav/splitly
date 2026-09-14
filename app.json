@@ -8,11 +8,18 @@
     "scheme": "splitly",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.splitly.app",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Take a photo to attach a receipt to an expense.",
+        "NSPhotoLibraryUsageDescription": "Splitly needs photo library access to upload receipts and avatars"
+      }
     },
     "android": {
+      "package": "com.splitly.app",
       "adaptiveIcon": {
-        "backgroundColor": "#E8F5ED",
+        "backgroundColor": "#E6FAF0",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
@@ -28,9 +35,25 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#1A7F56",
+          "backgroundColor": "#39A883",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
+        }
+      ],
+      "expo-secure-store",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/icon.png",
+          "color": "#39A883"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Splitly needs photo library access to upload receipts and avatars",
+          "cameraPermission": "Take a photo to attach a receipt to an expense.",
+          "microphonePermission": false
         }
       ]
     ],
