@@ -1,5 +1,5 @@
 import { Image, type ImageStyle } from 'expo-image';
-import { StyleSheet, View, type ViewStyle } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { BorderRadius } from '@/constants/theme';
@@ -38,8 +38,14 @@ function getInitials(name: string): string {
 }
 
 const FALLBACK_COLORS = [
-  '#E8F5ED', '#FFF3E0', '#E3F2FD', '#FCE4EC', '#F3E5F5',
-  '#E8EAF6', '#E0F7FA', '#FFF8E1',
+  '#E8F5ED',
+  '#FFF3E0',
+  '#E3F2FD',
+  '#FCE4EC',
+  '#F3E5F5',
+  '#E8EAF6',
+  '#E0F7FA',
+  '#FFF8E1',
 ];
 
 function getColorForName(name: string): string {
@@ -58,10 +64,7 @@ export function Avatar({ source, name, size = 'md', style }: AvatarProps) {
     return (
       <Image
         source={{ uri: source }}
-        style={[
-          { width: dimension, height: dimension, borderRadius: BorderRadius.full },
-          style,
-        ]}
+        style={[{ width: dimension, height: dimension, borderRadius: BorderRadius.full }, style]}
         contentFit="cover"
       />
     );
@@ -78,7 +81,7 @@ export function Avatar({ source, name, size = 'md', style }: AvatarProps) {
         style,
       ]}
     >
-      <ThemedText style={[styles.initials, { fontSize: FONT_SIZES[size], color: theme.primary }]}>
+      <ThemedText style={[styles.initials, { fontSize: FONT_SIZES[size], color: '#008568' }]}>
         {initials}
       </ThemedText>
     </View>

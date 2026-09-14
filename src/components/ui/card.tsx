@@ -14,20 +14,20 @@ export function Card({ children, onPress, style, variant = 'elevated' }: CardPro
   const theme = useTheme();
 
   const variantStyles: Record<string, ViewStyle> = {
-    elevated: { backgroundColor: theme.background, ...Shadow.md },
-    outlined: { backgroundColor: theme.background, borderWidth: 1, borderColor: theme.border },
-    filled: { backgroundColor: theme.surface },
+    elevated: { backgroundColor: theme.surface, ...Shadow.md },
+    outlined: { backgroundColor: theme.surface, borderWidth: 1, borderColor: theme.border },
+    filled: { backgroundColor: theme.primaryLight },
   };
 
-  const content = (
-    <View style={[styles.base, variantStyles[variant], style]}>
-      {children}
-    </View>
-  );
+  const content = <View style={[styles.base, variantStyles[variant], style]}>{children}</View>;
 
   if (onPress) {
     return (
-      <Pressable onPress={onPress} style={({ pressed }) => pressed && styles.pressed}>
+      <Pressable
+        accessibilityRole="button"
+        onPress={onPress}
+        style={({ pressed }) => pressed && styles.pressed}
+      >
         {content}
       </Pressable>
     );

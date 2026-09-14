@@ -1,4 +1,5 @@
-import { Pressable, StyleSheet, ActivityIndicator, type ViewStyle, type TextStyle } from 'react-native';
+import { MotionPressable } from '@/components/ui/motion-pressable';
+import { StyleSheet, ActivityIndicator, type ViewStyle, type TextStyle } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { BorderRadius, FontSize, Spacing } from '@/constants/theme';
@@ -29,9 +30,9 @@ export function Button({
   const theme = useTheme();
 
   const containerStyles: Record<ButtonVariant, ViewStyle> = {
-    primary: { backgroundColor: theme.primary },
+    primary: { backgroundColor: theme.primaryDark },
     secondary: { backgroundColor: theme.primaryLight },
-    outline: { backgroundColor: 'transparent', borderWidth: 1, borderColor: theme.border },
+    outline: { backgroundColor: theme.surface, borderWidth: 1, borderColor: theme.border },
     ghost: { backgroundColor: 'transparent' },
   };
 
@@ -51,11 +52,16 @@ export function Button({
   const textSizes: Record<ButtonSize, number> = {
     sm: FontSize.sm,
     md: FontSize.base,
-    lg: FontSize.lg,
+    lg: FontSize.base,
   };
 
   return (
-    <Pressable
+    <MotionPressable
+      accessibilityRole="button"
+      accessibilityLabel={title}
+      accessibilityState={{ disabled: disabled || loading, busy: loading }}
+      aria-disabled={disabled || loading}
+      aria-busy={loading}
       onPress={onPress}
       disabled={disabled || loading}
       style={({ pressed }) => [
@@ -70,29 +76,26 @@ export function Button({
       {loading ? (
         <ActivityIndicator color={textStyles[variant].color} size="small" />
       ) : (
-        <ThemedText
-          style={[
-            styles.text,
-            textStyles[variant],
-            { fontSize: textSizes[size] },
-          ]}
-        >
+        <ThemedText style={[styles.text, textStyles[variant], { fontSize: textSizes[size] }]}>
           {title}
         </ThemedText>
       )}
-    </Pressable>
+    </MotionPressable>
   );
 }
 
 const styles = StyleSheet.create({
   base: {
     borderRadius: BorderRadius.md,
+    minHeight: 48,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
   },
   text: {
     fontWeight: '600',
+    textAlign: 'center',
+    flexShrink: 1,
   },
   pressed: {
     opacity: 0.85,

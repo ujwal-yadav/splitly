@@ -14,7 +14,7 @@ export function ThemedText({ style, type, themeColor, ...rest }: ThemedTextProps
   return (
     <Text
       style={[
-        { color: theme[themeColor ?? 'text'] },
+        { color: theme[themeColor ?? 'text'], fontSize: FontSize.base },
         type && styles[type],
         style as TextStyle,
       ]}
@@ -27,22 +27,22 @@ const styles = StyleSheet.create({
   title: {
     fontSize: FontSize['3xl'],
     fontWeight: FontWeight.bold,
-    lineHeight: 36,
+    lineHeight: 32,
   },
   subtitle: {
     fontSize: FontSize.xl,
     fontWeight: FontWeight.semibold,
-    lineHeight: 28,
+    lineHeight: 24,
   },
   body: {
     fontSize: FontSize.base,
     fontWeight: FontWeight.regular,
-    lineHeight: 24,
+    lineHeight: 20,
   },
   label: {
     fontSize: FontSize.sm,
     fontWeight: FontWeight.medium,
-    lineHeight: 20,
+    lineHeight: 18,
   },
   caption: {
     fontSize: FontSize.xs,
