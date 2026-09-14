@@ -1,35 +1,41 @@
-import { StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { ThemedText } from '@/components/themed-text';
-import { Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
-
-export default function GroupsScreen() {
-  const theme = useTheme();
-
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { useRouter } from 'expo-router';
+import { View } from 'react-native';
+import { Chip } from '@/components/ui/chip';
+import { SearchInput } from '@/components/ui/search-input';
+import { AccountButton, Copy, GroupRow, Page, Panel, layout } from '@/components/ui/ledger-ui';
+import { useLedger } from '@/contexts/ledger-context';
+export default function Groups() {
+  const l = useLedger();
+  const r = useRouter();
+  const [q, setQ] = useState('');
+  const [archived, setArchived] = useState(false);
+  const groups = l.groups.filter(
+    (g) => g.archived === archived && g.name.toLowerCase().includes(q.toLowerCase()),
+  );
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
-      <View style={styles.header}>
-        <ThemedText style={[styles.title, { color: theme.text }]}>Groups</ThemedText>
+    <Page title="Groups" tab action={<AccountButton />} refresh>
+      <Button title="Create group" onPress={() => r.push('/create-group')} />
+      <SearchInput value={q} onChangeText={setQ} placeholder="Search groups" />
+      <View style={layout.wrap}>
+        <Chip label="Active" selected={!archived} onPress={() => setArchived(false)} />
+        <Chip label="Archived" selected={archived} onPress={() => setArchived(true)} />
       </View>
-    </SafeAreaView>
+      {groups.map((g) => (
+        <GroupRow key={g.id} group={g} />
+      ))}
+      {!groups.length && (
+        <Panel>
+          <Copy>
+            {q
+              ? 'No groups match your search.'
+              : archived
+                ? 'No archived groups.'
+                : 'Create a group and add the people sharing your expenses.'}
+          </Copy>
+        </Panel>
+      )}
+    </Page>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: Spacing.xl,
-    paddingTop: Spacing.md,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-  },
-});
