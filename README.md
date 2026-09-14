@@ -1,56 +1,53 @@
-# Welcome to your Expo app 👋
+# Splitly
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+An expense-sharing app for iOS, Android, and the web, built with Expo SDK 57 and Supabase.
 
-## Get started
+## Deploy the website to Vercel
 
-1. Install dependencies
+1. Push this repository, including `vercel.json`, to your Git provider.
+2. Import the repository into Vercel with the repository root as the Root Directory. The checked-in configuration selects Node.js 22, installs with `npm ci`, runs `npm run build`, and publishes `dist`. No build overrides are needed.
+3. Add these environment variables to the Vercel project before deploying (include Preview if you use preview deployments):
 
-   ```bash
-   npm install
-   ```
+   | Variable                        | Value                         |
+   | ------------------------------- | ----------------------------- |
+   | `EXPO_PUBLIC_SUPABASE_URL`      | Your Supabase project URL     |
+   | `EXPO_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase public anon key |
 
-2. Start the app
+   Use the same Supabase project as the mobile app to share accounts and expenses. These public values are embedded at build time; redeploy after changing them. Never use a service-role key here. Without these variables, the website loads but account sign-in and shared expenses are unavailable.
 
-   ```bash
-   npx expo start
-   ```
+4. Click **Deploy**. Vercel serves the website over HTTPS and rebuilds it on future pushes.
+5. In Supabase **Authentication → URL Configuration**, set the Site URL to your production website URL and allow `https://YOUR-DOMAIN/update-password` as a Redirect URL. Add equivalent URLs for any preview domains where you want password reset to work. Keep your mobile redirect URLs if you also use the native app.
 
-In the output, you'll find options to open the app in a
+For a new Supabase project, apply all SQL files in `supabase/migrations` in filename order before using the app. If using the Supabase CLI, link the intended project and run `supabase db push`. Existing projects that already have these migrations need no database changes.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+The web build uses a single-page application. Vercel routes direct visits and refreshes (including `/group/:id` and `/transaction/:id`) through the app while serving bundled assets normally. Authentication still controls access to account screens.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Local development
 
-## Get a fresh project
-
-When you're ready, run:
+Use Node.js 22.13 or newer within the 22.x release line.
 
 ```bash
-npm run reset-project
+npm ci
+cp .env.example .env.local
+# Fill in your Supabase public values in .env.local.
+npm run web
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+To run on a device, use `npm run ios`, `npm run android`, or `npm start`.
 
-### Other setup steps
+To build and preview the production website:
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+npm run build
+npm run preview
+```
 
-## Learn more
+## Checks
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npm run typecheck
+npm run lint
+npm test
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Deployment references: [Expo web publishing](https://docs.expo.dev/guides/publishing-websites/#vercel) and [Expo SDK 57](https://docs.expo.dev/versions/v57.0.0/).

@@ -2,6 +2,9 @@
   "name": "splitly",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "@expo/ui": "~57.0.16",
     "@expo/vector-icons": "^15.0.2",
@@ -44,6 +47,7 @@
     "lint-staged": "^17.5.0",
     "playwright": "^1.63.0",
     "prettier": "^3.9.6",
+    "serve": "^14.2.6",
     "typescript": "~6.0.3"
   },
   "scripts": {
@@ -52,6 +56,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "build": "expo export --platform web",
+    "preview": "serve --single dist",
     "lint": "expo lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

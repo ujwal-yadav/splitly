@@ -40,7 +40,7 @@ export async function signOut(): Promise<{ error: AuthError | null }> {
 
 export async function resetPassword(email: string): Promise<{ error: AuthError | null }> {
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: Linking.createURL('/(auth)/update-password'),
+    redirectTo: Linking.createURL('/update-password'),
   });
   return { error };
 }
